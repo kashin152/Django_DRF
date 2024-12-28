@@ -5,8 +5,12 @@ from rest_framework.response import Response
 
 from courses.models import Course, Lesson, Subscription
 from courses.paginators import CoursesPagination
-from courses.serializers import (CourseCountSerializer, CourseSerializer,
-                                 LessonSerializer)
+from courses.serializers import (
+    CourseCountSerializer,
+    CourseSerializer,
+    LessonSerializer,
+)
+from courses.tasks import newsletter_about_updating_course_materials
 from users.permissions import IsModer, IsOwner
 
 
@@ -23,6 +27,13 @@ class CourseViewSet(viewsets.ModelViewSet):
         course = serializer.save()
         course.owner = self.request.user
         course.save()
+
+    def perform_update(self, serializer):
+        course = serializer.save()
+        subscribers = Subscription.objects.filter(course=course).select_related("user")
+
+        for subscription in subscribers:
+            newsletter_about_updating_course_materials.delay(subscription.user.email)
 
     def get_permissions(self):
         if self.action == "create":

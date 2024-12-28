@@ -20,4 +20,4 @@ class CustomsUserDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomsUser
-        fields = ["id", "email", "phone_number", "avatar", "city", "payment_history"]
+        fields = ["id", "email", "phone_number", "avatar", "country", "payment_history"]
