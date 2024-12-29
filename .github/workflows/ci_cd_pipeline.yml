@@ -51,12 +51,10 @@ jobs:
                   envkey_POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
                   envkey_POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
                   envkey_POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
-                  envkey_STRIPE_API_KEY: ${{ secrets.STRIPE_API_KEY }}
-                  envkey_REDIS_LOCATION: ${{ secrets.REDIS_LOCATION }}
+                  envkey_STRIPE_API_KEY: ${{ secrets.SECRET_KEY_API }}
+                  envkey_REDIS_LOCATION: ${{ secrets.LOCATION }}
                   envkey_EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
                   envkey_EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
-                  envkey_EMAIL_USE_TLS: ${{ secrets.EMAIL_USE_TLS }}
-                  envkey_EMAIL_USE_SSL: ${{ secrets.EMAIL_USE_SSL }}
                   envkey_EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
                   envkey_EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
                   fail_on_empty: true
