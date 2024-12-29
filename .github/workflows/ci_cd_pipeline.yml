@@ -37,10 +37,10 @@ jobs:
             - name: Add Poetry to $PATH
               run: |
                 python -m pip install --upgrade pip
-                pip install six
+                pip install poetry six
             - name: Install dependencies
-              id: pyenv
-              uses: Steffo99/actions-poetry-deps@0.2.3
+              run: |
+                poetry install --no-interaction
             - name: Make envfile
               uses: SpicyPizza/create-envfile@v2.0
               with:
