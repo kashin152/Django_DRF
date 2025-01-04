@@ -86,9 +86,9 @@ jobs:
                     else
                         echo "Poetry уже установлен."
                     fi
-                    # Добавляем путь к Poetry в переменную PATH для текущей сессии
                     export PATH="$HOME/.local/bin:$PATH"
                     poetry --version
+                    poetry install
                   EOF
             - name: Apply migrations on server
               run: |
