@@ -79,10 +79,16 @@ jobs:
             - name: Install dependencies on server
               run: |
                   ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-                    cd ${{ secrets.DEPLOY_DIR }}
-                    export PATH="/root/.local/bin:$PATH"
-                    poetry shell
-                    poetry install
+                    sudo apt update
+                    if ! command -v poetry &> /dev/null; then
+                        echo "Poetry не найден. Устанавливаем..."
+                        curl -sSL https://install.python-poetry.org | python3 -
+                        echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+                        source ~/.bashrc
+                    else
+                        echo "Poetry уже установлен."
+                    fi
+                    poetry --version
                   EOF
             - name: Apply migrations on server
               run: |
