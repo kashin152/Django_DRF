@@ -86,8 +86,8 @@ jobs:
                     else
                         echo "Poetry уже установлен."
                     fi
-                    export PATH="$HOME/.local/bin:$PATH"
                     cd ${{ secrets.DEPLOY_DIR }}
+                    export PATH="$HOME/.local/bin:$PATH"
                     poetry --version
                     poetry install
                   EOF
