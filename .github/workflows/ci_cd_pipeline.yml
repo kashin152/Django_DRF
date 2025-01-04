@@ -36,10 +36,8 @@ jobs:
               run: |
                 curl -sSL https://install.python-poetry.org | python3 -
                 echo "$HOME/.local/bin" >> $GITHUB_PATH
-
             - name: Install dependencies
-              run: |
-                poetry install
+              run: poetry install
             - name: Make envfile
               uses: SpicyPizza/create-envfile@v2.0
               with:
