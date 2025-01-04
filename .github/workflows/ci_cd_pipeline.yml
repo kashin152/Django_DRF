@@ -68,8 +68,13 @@ jobs:
             - name: Copy project files to server
               run: |
                   ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
+                    mkdir -p ${{ secrets.DEPLOY_DIR }}
                     cd ${{ secrets.DEPLOY_DIR }}
-                    git pull
+                    if [ ! -d ".git" ]; then
+                        git clone https://github.com/kashin152/Django_DRF.git .
+                    else
+                        git pull
+                    fi
                   EOF
             - name: Install dependencies on server
               run: |
