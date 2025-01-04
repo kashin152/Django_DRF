@@ -83,11 +83,11 @@ jobs:
                     if ! command -v poetry &> /dev/null; then
                         echo "Poetry не найден. Устанавливаем..."
                         curl -sSL https://install.python-poetry.org | python3 -
-                        echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
-                        source ~/.bashrc
                     else
                         echo "Poetry уже установлен."
                     fi
+                    # Добавляем путь к Poetry в переменную PATH для текущей сессии
+                    export PATH="$HOME/.local/bin:$PATH"
                     poetry --version
                   EOF
             - name: Apply migrations on server
