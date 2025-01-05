@@ -89,6 +89,7 @@ jobs:
                     export PATH="$HOME/.local/bin:$PATH"
                     poetry --version
                     poetry install --no-root
+                    echo "SECRET_KEY: $SECRET_KEY"
                   EOF
             - name: Apply migrations on server
               run: |
