@@ -93,11 +93,8 @@ jobs:
                   EOF
             - name: Apply migrations on server
               run: |
-                  ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-                    cd ${{ secrets.DEPLOY_DIR }}
                     sudo apt-get update
                     sudo apt-get install -y postgresql-client
-                    sudo service postgresql start
                     sudo -u postgres psql -c "ALTER USER postgres PASSWORD '12345';"
                     sudo -u postgres psql -c "CREATE DATABASE restdatabase;"
                     sudo -u postgres psql -c "CREATE ROLE runner WITH LOGIN PASSWORD '12345';"
