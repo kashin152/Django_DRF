@@ -90,7 +90,7 @@ jobs:
             echo "export PATH=\"$HOME/.local/bin:\$PATH\"" >> ~/.bashrc
             source ~/.bashrc
             cd ${{ secrets.DEPLOY_DIR }}
-            poetry install --no-root
+            poetry install
             export SECRET_KEY="${{ secrets.SECRET_KEY }}"
           EOF
       - name: Применение миграций на сервере
