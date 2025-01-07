@@ -90,7 +90,6 @@ jobs:
       - name: Установка зависимостей на сервере
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-            export PATH="$HOME/.local/bin:$PATH"
             if ! command -v poetry &> /dev/null; then
               echo "Poetry не найден. Устанавливаем..."
               curl -sSL https://install.python-poetry.org | python3 -
@@ -106,6 +105,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
             cd ${{ secrets.DEPLOY_DIR }}
+            export PATH="$HOME/.local/bin:$PATH"
             poetry run python3 manage.py makemigrations
             poetry run python3 manage.py migrate
           EOF
