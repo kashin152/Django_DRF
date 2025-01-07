@@ -95,18 +95,16 @@ jobs:
                   EOF
             - name: Apply migrations on server
               run: |
-                  ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'                
-                    sudo apt-get update
-                    sudo apt-get install -y postgresql-client
-                    sudo -u postgres psql -c "ALTER USER postgres PASSWORD '12345';"
-                    sudo -u postgres psql -c "CREATE DATABASE restdatabase;"
-                    sudo -u postgres psql -c "CREATE ROLE runner WITH LOGIN PASSWORD '12345';"
-                    sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE restdatabase TO runner;"
-                    sudo -u postgres psql -c "GRANT CREATE ON SCHEMA public TO runner;"
-                    echo "DATABASE_URL=  postgres://runner:12345  @localhost/restdatabase" >> $GITHUB_ENV 
-                    sudo service postgresql start 
-                    poetry run python3 manage.py makemigrations
-                    poetry run python3 manage.py migrate
+                  services:
+                    postgres:
+                      image: postgres:13
+                      env:
+                        POSTGRES_DB: restdatabase
+                        POSTGRES_USER: postgres
+                        POSTGRES_PASSWORD: 12345
+                      ports:
+                        - 5432:5432
+                      options: --health-cmd "pg_isready -U postgres" --health-timeout 5s --health-retries 5 
                   EOF
             - name: Collect static files on server
               run: |
