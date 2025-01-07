@@ -109,6 +109,7 @@ jobs:
                     cd ${{ secrets.DEPLOY_DIR }}
                     export PATH="$HOME/.local/bin:$PATH"
                     export DATABASE_URL="postgres://postgres:12345@localhost:5432/restdatabase"
+                    export SECRET_KEY="${{ secrets.SECRET_KEY }}"
                     poetry run python3 manage.py makemigrations
                     poetry run python3 manage.py migrate
                   EOF
