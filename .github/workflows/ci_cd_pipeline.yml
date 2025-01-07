@@ -83,6 +83,7 @@ jobs:
             if ! command -v poetry &> /dev/null; then
               echo "Poetry не найден. Устанавливаем..."
               curl -sSL https://install.python-poetry.org | python3 -
+              echo "$HOME/.local/bin" >> $GITHUB_PATH
             else
               echo "Poetry уже установлен."
             fi
