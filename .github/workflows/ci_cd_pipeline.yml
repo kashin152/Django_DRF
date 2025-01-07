@@ -91,7 +91,6 @@ jobs:
                     poetry --version
                     poetry install --no-root
                     echo "SECRET_KEY: $SECRET_KEY"
-                  EOF
             - name: Apply migrations on server
               run: |
                     sudo apt-get update
