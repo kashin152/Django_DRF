@@ -105,6 +105,10 @@ jobs:
           sudo -E -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE restdatabase TO runner;"
           sudo -E -u postgres psql -c "GRANT CREATE ON SCHEMA public TO runner;"
           curl -sSL https://install.python-poetry.org | python3 -
+          echo "Текущая директория:"
+          pwd
+          echo "Содержимое текущей директории:"
+          ls -la
           cd ${{ secrets.DEPLOY_DIR }}
           poetry run python3 manage.py makemigrations
           poetry run python3 manage.py migrate
