@@ -94,13 +94,21 @@ jobs:
                     echo "SECRET_KEY: $SECRET_KEY"
                   EOF
             - name: Apply migrations on server
+              services:
+                postgres:
+                  image: postgres:13
+                  env:
+                    POSTGRES_DB: restdatabase
+                    POSTGRES_USER: postgres
+                    POSTGRES_PASSWORD: 12345
+                  ports:
+                    - 5432:5432
+                  options: --health-cmd "pg_isready -U postgres" --health-timeout 5s --health-retries 5
               run: |
-                  ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-                    cd ${{ secrets.DEPLOY_DIR }}
-                    export PATH="/root/.local/bin:$PATH"
-                    poetry run python3 manage.py makemigrations
-                    poetry run python3 manage.py migrate
-                  EOF
+                sleep 15
+                export DATABASE_URL="postgres://postgres:12345@localhost:5432/restdatabase"
+                poetry run python3 manage.py makemigrations
+                poetry run python3 manage.py migrate
             - name: Collect static files on server
               run: |
                   ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
