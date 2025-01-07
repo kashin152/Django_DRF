@@ -105,7 +105,6 @@ jobs:
                   EOF
             - name: Apply migrations on server
               run: |
-                sleep 15
                 export DATABASE_URL="postgres://postgres:12345@localhost:5432/restdatabase"
                 poetry run python3 manage.py makemigrations
                 poetry run python3 manage.py migrate
