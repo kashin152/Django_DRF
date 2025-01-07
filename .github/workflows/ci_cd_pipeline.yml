@@ -96,8 +96,8 @@ jobs:
             else
               echo "Poetry уже установлен."
             fi
-            cd ${{ secrets.DEPLOY_DIR }}
             export PATH="$HOME/.local/bin:$PATH"
+            cd ${{ secrets.DEPLOY_DIR }}
             poetry install --no-root
             export SECRET_KEY="${{ secrets.SECRET_KEY }}"
           EOF
@@ -106,6 +106,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
             cd ${{ secrets.DEPLOY_DIR }}
             export PATH="$HOME/.local/bin:$PATH"
+            export SECRET_KEY="${{ secrets.SECRET_KEY }}"
             poetry run python3 manage.py makemigrations
             poetry run python3 manage.py migrate
           EOF
