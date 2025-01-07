@@ -95,15 +95,15 @@ jobs:
                   EOF
             - name: Apply migrations on server
               run: |
-                  ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
+                  ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'                
                     sudo apt-get update
                     sudo apt-get install -y postgresql-client
-                    echo "ALTER USER postgres PASSWORD '12345';" | sudo -u postgres psql
-                    echo "CREATE DATABASE restdatabase;" | sudo -u postgres psql
-                    echo "CREATE ROLE runner WITH LOGIN PASSWORD '12345';" | sudo -u postgres psql
-                    echo "GRANT ALL PRIVILEGES ON DATABASE restdatabase TO runner;" | sudo -u postgres psql
-                    echo "GRANT CREATE ON SCHEMA public TO runner;" | sudo -u postgres psql
-                    echo "DATABASE_URL=postgres://runner:12345@localhost/restdatabase" >> $GITHUB_ENV 
+                    sudo -u postgres psql -c "ALTER USER postgres PASSWORD '12345';"
+                    sudo -u postgres psql -c "CREATE DATABASE restdatabase;"
+                    sudo -u postgres psql -c "CREATE ROLE runner WITH LOGIN PASSWORD '12345';"
+                    sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE restdatabase TO runner;"
+                    sudo -u postgres psql -c "GRANT CREATE ON SCHEMA public TO runner;"
+                    echo "DATABASE_URL=  postgres://runner:12345  @localhost/restdatabase" >> $GITHUB_ENV 
                     sudo service postgresql start 
                     poetry run python3 manage.py makemigrations
                     poetry run python3 manage.py migrate
