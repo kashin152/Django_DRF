@@ -83,11 +83,12 @@ jobs:
             if ! command -v poetry &> /dev/null; then
               echo "Poetry не найден. Устанавливаем..."
               curl -sSL https://install.python-poetry.org | python3 -
-              echo "$HOME/.local/bin" >> $GITHUB_PATH
             else
               echo "Poetry уже установлен."
             fi
             export PATH="$HOME/.local/bin:$PATH"
+            echo "export PATH=\"$HOME/.local/bin:\$PATH\"" >> ~/.bashrc
+            source ~/.bashrc
             cd ${{ secrets.DEPLOY_DIR }}
             poetry install --no-root
             export SECRET_KEY="${{ secrets.SECRET_KEY }}"
@@ -103,8 +104,8 @@ jobs:
           sudo -E -u postgres psql -c "CREATE ROLE runner WITH LOGIN PASSWORD '12345';"
           sudo -E -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE restdatabase TO runner;"
           sudo -E -u postgres psql -c "GRANT CREATE ON SCHEMA public TO runner;"
-          sudo -E poetry run python3 manage.py makemigrations
-          sudo -E poetry run python3 manage.py migrate
+          poetry run python3 manage.py makemigrations
+          poetry run python3 manage.py migrate
       - name: Collect static files on server
         run: |
             ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
