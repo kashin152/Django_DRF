@@ -113,3 +113,15 @@
 - Workflow содержит шаг деплоя, который запускается только после успешного завершения тестов.
 - Проект автоматически деплоится на удаленный сервер.
 - Деплой выполняется корректно, без ошибок.
+
+
+services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_DB: restdatabase
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: 12345
+        ports:
+          - 5432:5432
+        options: --health-cmd "pg_isready -U postgres" --health-timeout 5s --health-retries 5 
