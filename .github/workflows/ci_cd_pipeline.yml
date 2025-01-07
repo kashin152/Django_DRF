@@ -95,23 +95,25 @@ jobs:
           EOF
       - name: Применение миграций на сервере
         run: |
-          export PATH="$HOME/.local/bin:$PATH"
-          sudo -E apt-get update
-          sudo -E apt-get install -y postgresql-client
-          sudo -E service postgresql start
-          sudo -E -u postgres psql -c "ALTER USER postgres PASSWORD '12345';"
-          sudo -E -u postgres psql -c "CREATE DATABASE restdatabase;"
-          sudo -E -u postgres psql -c "CREATE ROLE runner WITH LOGIN PASSWORD '12345';"
-          sudo -E -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE restdatabase TO runner;"
-          sudo -E -u postgres psql -c "GRANT CREATE ON SCHEMA public TO runner;"
-          curl -sSL https://install.python-poetry.org | python3 -
-          echo "Текущая директория:"
-          pwd
-          echo "Содержимое текущей директории:"
-          ls -la
-          cd ${{ secrets.DEPLOY_DIR }}
-          poetry run python3 manage.py makemigrations
-          poetry run python3 manage.py migrate
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
+            export PATH="$HOME/.local/bin:$PATH"
+            sudo -E apt-get update
+            sudo -E apt-get install -y postgresql-client
+            sudo -E service postgresql start
+            sudo -E -u postgres psql -c "ALTER USER postgres PASSWORD '12345';"
+            sudo -E -u postgres psql -c "CREATE DATABASE restdatabase;"
+            sudo -E -u postgres psql -c "CREATE ROLE runner WITH LOGIN PASSWORD '12345';"
+            sudo -E -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE restdatabase TO runner;"
+            sudo -E -u postgres psql -c "GRANT CREATE ON SCHEMA public TO runner;"
+            curl -sSL https://install.python-poetry.org | python3 -
+            
+            # Переход в директорию Django_DRF
+            cd ${{ secrets.DEPLOY_DIR }} || { echo "Директория Django_DRF не найдена"; exit 1; }
+            
+            # Выполнение команд Poetry
+            poetry run python3 manage.py makemigrations
+            poetry run python3 manage.py migrate
+          EOF
       - name: Collect static files on server
         run: |
             ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
