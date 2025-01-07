@@ -104,8 +104,8 @@ jobs:
           sudo -E -u postgres psql -c "CREATE ROLE runner WITH LOGIN PASSWORD '12345';"
           sudo -E -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE restdatabase TO runner;"
           sudo -E -u postgres psql -c "GRANT CREATE ON SCHEMA public TO runner;"
-          poetry run python3 manage.py makemigrations
-          poetry run python3 manage.py migrate
+          \Users\kashi\AppData\Roaming\pypoetry\venv\Scripts\poetry poetry run python3 manage.py makemigrations
+          \Users\kashi\AppData\Roaming\pypoetry\venv\Scripts\poetry poetry run python3 manage.py migrate
       - name: Collect static files on server
         run: |
             ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
