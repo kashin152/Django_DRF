@@ -101,6 +101,9 @@ jobs:
             poetry install --no-root
             export SECRET_KEY="${{ secrets.SECRET_KEY }}"
           EOF
+      - name: Wait for PostgreSQL
+        run: |
+          until pg_isready -h localhost -p 5432; do sleep 1; done
       - name: Применение миграций на сервере
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
