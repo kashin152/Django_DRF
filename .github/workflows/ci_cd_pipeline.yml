@@ -105,10 +105,13 @@ jobs:
                   EOF
             - name: Apply migrations on server
               run: |
-                export PATH="$HOME/.local/bin:$PATH"
-                export DATABASE_URL="postgres://postgres:12345@localhost:5432/restdatabase"
-                poetry run python3 manage.py makemigrations
-                poetry run python3 manage.py migrate
+                  ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
+                    cd ${{ secrets.DEPLOY_DIR }}
+                    export PATH="$HOME/.local/bin:$PATH"
+                    export DATABASE_URL="postgres://postgres:12345@localhost:5432/restdatabase"
+                    poetry run python3 manage.py makemigrations
+                    poetry run python3 manage.py migrate
+                  EOF
             - name: Collect static files on server
               run: |
                   ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
