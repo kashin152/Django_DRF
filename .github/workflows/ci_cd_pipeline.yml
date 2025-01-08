@@ -91,5 +91,5 @@ jobs:
 
           ssh-keyscan -H 94.103.12.183 >> /home/runner/.ssh/known_hosts
 
-          sshpass -p "${{ secrets.ROOT_PASSWORD }}" ssh -v -o StrictHostKeyChecking=no root@94.103.12.183 "cd /root/Django_DRF && git pull && curl -sSL https://install.python-poetry.org | python3 - && poetry install && sudo systemctl restart nginx"
+          sshpass -p "${{ secrets.ROOT_PASSWORD }}" ssh -v -o StrictHostKeyChecking=no root@94.103.12.183 "cd /root/Django_DRF && git pull && curl -sSL https://install.python-poetry.org | python3 - && export PATH=\"\$HOME/.local/bin:\$PATH\" && poetry install && sudo systemctl restart nginx"
 
