@@ -84,6 +84,8 @@ jobs:
 
       - name: Deploy to server
         env:
-          ROOT_PASSWORD: ${{ secrets.ROOT_PASSWORD }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY}}
+          SSH_PUBLIC_KEY: ${{ secrets.SSH_PUBLIC_KEY}}
+          ROOT_PASSWORD: ${{ secrets.ROOT_PASSWORD}}
         run: |
           sshpass -p "pX^zc-bwLiB9BZ" ssh -v -o StrictHostKeyChecking=no root@94.103.12.183 "cd /root/Django_DRF && git pull && poetry install && sudo systemctl restart nginx"
