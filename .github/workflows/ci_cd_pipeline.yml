@@ -75,9 +75,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Add SSH key
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key
+          chmod 600 private_key
+          eval "$(ssh-agent -s)"
+          ssh-add private_key
+
       - name: Deploy to server
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY}}
-          ROOT_PASSWORD: ${{ secrets.ROOT_PASSWORD}}
+          ROOT_PASSWORD: ${{ secrets.ROOT_PASSWORD }}
         run: |
-          sshpass -p "pX^zc-bwLiB9BZ" ssh -v -o StrictHostKeyChecking=no ${{ secrets.SERVER_IP }} "cd ${{ secrets.DEPLOY_DIR }} && git pull && poetry install && sudo systemctl restart nginx"
+          ssh -v -o StrictHostKeyChecking=no ${{ secrets.SERVER_IP }} "cd ${{ secrets.DEPLOY_DIR }} && git pull && poetry install && sudo systemctl restart nginx"
