@@ -86,4 +86,4 @@ jobs:
         env:
           ROOT_PASSWORD: ${{ secrets.ROOT_PASSWORD }}
         run: |
-          ssh -v -o StrictHostKeyChecking=no ${{ secrets.SERVER_IP }} "cd ${{ secrets.DEPLOY_DIR }} && git pull && poetry install && sudo systemctl restart nginx"
+          ssh -v -o StrictHostKeyChecking=no root@${{ secrets.SERVER_IP }} "cd ${{ secrets.DEPLOY_DIR }} && git pull && poetry install && sudo systemctl restart nginx"
