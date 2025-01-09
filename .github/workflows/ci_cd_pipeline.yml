@@ -68,6 +68,13 @@ jobs:
             sleep 2
           done
 
+      - name: Check PostgreSQL service
+        run: |
+          echo "Checking PostgreSQL service..."
+          docker ps
+          echo "PostgreSQL logs:"
+          docker logs $(docker ps -q --filter ancestor=postgres:latest)
+
       - name: Run makemigrations
         run: |
           export SECRET_KEY="${{ secrets.SECRET_KEY }}"
