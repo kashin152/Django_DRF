@@ -49,14 +49,18 @@ jobs:
 
       - name: Run makemigrations
         run: |
+          export SECRET_KEY="${{ secrets.SECRET_KEY }}"
           poetry run python manage.py makemigrations
 
       - name: Run migrate
         run: |
+          export SECRET_KEY="${{ secrets.SECRET_KEY }}"
           poetry run python manage.py migrate
 
       - name: Run tests
-        run: python manage.py test
+        run: |
+          export SECRET_KEY="${{ secrets.SECRET_KEY }}"
+          python manage.py test
           
   deploy:
     needs: tests
