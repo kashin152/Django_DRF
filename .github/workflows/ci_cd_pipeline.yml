@@ -53,11 +53,21 @@ jobs:
           poetry run python manage.py makemigrations
 
       - name: Run migrate
+        env:
+          NAME: restdatabase
+          USER: rest_user
+          PASSWORD: rest_user_password
+          HOST: localhost
         run: |
           export SECRET_KEY="${{ secrets.SECRET_KEY }}"
-          poetry run python manage.py migrate
+          python manage.py migrate
 
       - name: Run tests
+        env:
+          NAME: restdatabase
+          USER: rest_user
+          PASSWORD: rest_user_password
+          HOST: localhost
         run: |
           export SECRET_KEY="${{ secrets.SECRET_KEY }}"
           python manage.py test
