@@ -41,7 +41,6 @@ jobs:
           sudo locale-gen en_US.UTF-8
           export LANG=en_US.UTF-8
           curl -sSL https://install.python-poetry.org | python3 -
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
 
       - name: Install dependencies
         run: |
@@ -59,7 +58,6 @@ jobs:
           PASSWORD: rest_user_password
           HOST: localhost
         run: |
-          export PATH="/root/.local/bin:$PATH"
           export SECRET_KEY="${{ secrets.SECRET_KEY }}"
           python manage.py migrate
 
