@@ -32,8 +32,12 @@ jobs:
 
       - name: Install Poetry
         run: |
+          sudo apt-get update && sudo apt-get install -y locales
+          sudo locale-gen en_US.UTF-8
+          export LANG=en_US.UTF-8
           curl -sSL https://install.python-poetry.org | python3 -
           echo "$HOME/.local/bin" >> $GITHUB_PATH
+
       - name: Install dependencies
         run: |
           poetry install --no-root
