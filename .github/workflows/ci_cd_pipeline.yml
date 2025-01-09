@@ -26,6 +26,21 @@ jobs:
     needs: lint
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: restdatabase
+          POSTGRES_USER: rest_user
+          POSTGRES_PASSWORD: rest_user_password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U rest_user"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -45,6 +60,13 @@ jobs:
       - name: Install dependencies
         run: |
           poetry install --no-root
+
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          until pg_isready -h localhost -U rest_user; do
+            echo "Waiting for PostgreSQL to be ready..."
+            sleep 2
+          done
 
       - name: Run makemigrations
         run: |
