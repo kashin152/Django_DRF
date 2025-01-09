@@ -59,7 +59,7 @@ jobs:
           HOST: localhost
         run: |
           export SECRET_KEY="${{ secrets.SECRET_KEY }}"
-          python manage.py migrate
+          poetry run python manage.py migrate
 
       - name: Run tests
         env:
@@ -69,7 +69,7 @@ jobs:
           HOST: localhost
         run: |
           export SECRET_KEY="${{ secrets.SECRET_KEY }}"
-          python manage.py test
+          poetry run python manage.py test
           
   deploy:
     needs: tests
