@@ -5,11 +5,8 @@ from rest_framework.response import Response
 
 from courses.models import Course, Lesson, Subscription
 from courses.paginators import CoursesPagination
-from courses.serializers import (
-    CourseCountSerializer,
-    CourseSerializer,
-    LessonSerializer,
-)
+from courses.serializers import (CourseCountSerializer, CourseSerializer,
+                                 LessonSerializer)
 from courses.tasks import newsletter_about_updating_course_materials
 from users.permissions import IsModer, IsOwner
 

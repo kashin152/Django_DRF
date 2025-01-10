@@ -7,16 +7,10 @@ from rest_framework.response import Response
 
 from courses.models import Course
 from users.models import CustomsUser, Payment
-from users.serializers import (
-    CustomsUserDetailSerializer,
-    PaymentSerializer,
-    UserSerializer,
-)
-from users.services import (
-    creating_price_stripe,
-    creating_product_stripe,
-    creating_session_stripe,
-)
+from users.serializers import (CustomsUserDetailSerializer, PaymentSerializer,
+                               UserSerializer)
+from users.services import (creating_price_stripe, creating_product_stripe,
+                            creating_session_stripe)
 
 
 class UserCreateAPIView(CreateAPIView):
