@@ -98,23 +98,23 @@ jobs:
                     poetry install --no-root
                     echo "SECRET_KEY: $SECRET_KEY"
                   EOF
-            - name: Настройка PostgreSQL
-              run: |
-                ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-                  cd ${{ secrets.DEPLOY_DIR }}
-                  export PATH="/root/.local/bin:$PATH"
-                  export SECRET_KEY="${{ secrets.SECRET_KEY }}"
-                  echo "SECRET_KEY: $SECRET_KEY"
-                  sudo apt-get update
-                  sudo apt-get install -y postgresql-client
-                  sudo service postgresql start
-                  sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'rest_user_password';"
-                  sudo -u postgres psql -c "CREATE DATABASE restdatabase;"
-                  sudo -u postgres psql -c "CREATE ROLE runner WITH LOGIN PASSWORD 'rest_user_password';"
-                  sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE restdatabase TO runner;"
-                  sudo -u postgres psql -c "GRANT CREATE ON SCHEMA public TO runner;"
-                  echo "DATABASE_URL=postgres://runner:rest_user_password@localhost/restdatabase" >> $GITHUB_ENV
-                EOF
+#            - name: Настройка PostgreSQL
+#              run: |
+#                ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
+#                  cd ${{ secrets.DEPLOY_DIR }}
+#                  export PATH="/root/.local/bin:$PATH"
+#                  export SECRET_KEY="${{ secrets.SECRET_KEY }}"
+#                  echo "SECRET_KEY: $SECRET_KEY"
+#                  sudo apt-get update
+#                  sudo apt-get install -y postgresql-client
+#                  sudo service postgresql start
+#                  sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'rest_user_password';"
+#                  sudo -u postgres psql -c "CREATE DATABASE restdatabase;"
+#                  sudo -u postgres psql -c "CREATE ROLE runner WITH LOGIN PASSWORD 'rest_user_password';"
+#                  sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE restdatabase TO runner;"
+#                  sudo -u postgres psql -c "GRANT CREATE ON SCHEMA public TO runner;"
+#                  echo "DATABASE_URL=postgres://runner:rest_user_password@localhost/restdatabase" >> $GITHUB_ENV
+#                EOF
 
             - name: Apply migrations on server
               run: |
