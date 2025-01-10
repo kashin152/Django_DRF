@@ -75,4 +75,4 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY}}
           ROOT_PASSWORD: ${{ secrets.ROOT_PASSWORD}}
         run: |
-          sshpass -p "ntSHuQx?wA&u" ssh -v -o StrictHostKeyChecking=no root@94.103.12.183 "cd /root/Django_DRF && git pull && /root/.local/bin/poetry install && sudo systemctl restart nginx"
+          sshpass -p "ntSHuQx?wA&u" ssh -v -o StrictHostKeyChecking=no root@94.103.12.183 "cd /root/Django_DRF && git pull && /root/.local/bin/poetry install -vvv && sudo systemctl restart nginx"
