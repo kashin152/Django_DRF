@@ -84,6 +84,7 @@ jobs:
           sshpass -p "ntSHuQx?wA&u" ssh -v -o StrictHostKeyChecking=no root@94.103.12.183 "
             apt update && apt install -y python3.12-venv && \
             cd /root/Django_DRF && \
+            git switch feature/homework_35.2 \
             python3 -m venv venv && \
             source venv/bin/activate && \
             git pull && \
